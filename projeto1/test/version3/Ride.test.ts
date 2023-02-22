@@ -1,11 +1,10 @@
+import FirstDayFareCalculatorHandler from "../../src/version3/chain/FirstDayFareCalculatorHandler";
+import NormalFareCalculatorHandler from "../../src/version3/chain/NormalFareCalculatorHandler";
+import OvernightFareCalculatorHandler from "../../src/version3/chain/OvernightFarecalculatorHandler";
+import OvernightSundayFareCalculatorHandler from "../../src/version3/chain/OvernightSundayFarecalculatorHandler";
+import PeakTimeFareCalculatorHandler from "../../src/version3/chain/PeakTimeFarecalculatorHandler";
+import SundayFareCalculatorHandler from "../../src/version3/chain/SundayFarecalculatorHandler";
 import Ride from "../../src/version3/Ride";
-
-import OvernightFareCalculatorHandler from "../../src/version3/OvernightFarecalculatorHandler";
-import PeakTimeFareCalculatorHandler from "../../src/version3/PeakTimeFarecalculatorHandler";
-import SundayFareCalculatorHandler from "../../src/version3/SundayFarecalculatorHandler";
-import OvernightSundayFareCalculatorHandler from "../../src/version3/OvernightSundayFarecalculatorHandler";
-import NormalFareCalculatorHandler from "../../src/version3/NormalFareCalculatorHandler";
-import FirstDayFareCalculatorHandler from "../../src/version3/FirstDayFareCalculatorHandler";
 
 let ride: Ride;
 

@@ -1,12 +1,10 @@
+import Segment from "../Segment";
 import FareCalculatorHandler from "./FareCalculatorHandler";
-import Segment from "./Segment";
 
 export default class OvernightFareCalculatorHandler implements FareCalculatorHandler {
     FARE = 3.9;
 
-    constructor(readonly next?: FareCalculatorHandler) {
-
-    }
+    constructor(readonly next?: FareCalculatorHandler) {}
 
     calculate(segment: Segment): number {
         if (segment.isOvernight() && !segment.isSunday()) {
@@ -15,5 +13,4 @@ export default class OvernightFareCalculatorHandler implements FareCalculatorHan
         if (!this.next) throw new Error();
         return this.next.calculate(segment);
     }
-    
 }

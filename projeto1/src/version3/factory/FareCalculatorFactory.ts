@@ -1,9 +1,9 @@
-import Segment from "./Segment";
-import NormalFareCalculator from "./NormalCalculator";
-import OvernightFareCalculator from "./OvernightFareCalculator";
-import OvernightSundayFareCalculator from "./OvernightSundayFareCalculator";
-import PeakTimeFareCalculator from "./PeakTimeFareCalculator";
-import SundayFareCalculator from "./SundayFareCalculator";
+import Segment from "../Segment";
+import NormalFareCalculator from "../strategy/NormalCalculator";
+import OvernightFareCalculator from "../strategy/OvernightFareCalculator";
+import OvernightSundayFareCalculator from "../strategy/OvernightSundayFareCalculator";
+import PeakTimeFareCalculator from "../strategy/PeakTimeFareCalculator";
+import SundayFareCalculator from "../strategy/SundayFareCalculator";
 
 export default class FareCalculatorFactory {
     

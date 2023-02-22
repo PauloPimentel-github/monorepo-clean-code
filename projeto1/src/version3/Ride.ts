@@ -1,5 +1,4 @@
-import FareCalculatorFactory from "./FareCalculatorFactory";
-import FareCalculatorHandler from "./FareCalculatorHandler";
+import FareCalculatorHandler from "./chain/FareCalculatorHandler";
 import Segment from "./Segment";
 
 export default class Ride {
@@ -22,5 +21,4 @@ export default class Ride {
         }
         return (fare < this.MIN_FARE) ? this.MIN_FARE : fare;
     }
-
 }
