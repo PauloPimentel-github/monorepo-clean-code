@@ -17,6 +17,8 @@
   },
   "devDependencies": {
     "@types/node": "^18.14.2",
+    "@types/sinon": "^10.0.13",
+    "sinon": "^15.0.1",
     "tslib": "^2.5.0"
   }
 }
