@@ -1,15 +1,20 @@
 import Checkout from "../src/Checkout";
-import sinon from "sinon";
 import CurrencyGatewayHttp from "../src/CurrencyGatewayHttp";
 import ProductRepositoryDatabase from "../src/ProductRepositoryDatabase";
 import CouponRepositoryDatabase from "../src/CouponRepositoryDatabase";
 import CurrencyGateway from "../src/CurrencyGateway";
 import ProductRepository from "../src/ProductRepository";
+import GetOrder from "../src/GetOrder";
+import crypto from "crypto";
+import sinon from "sinon";
+import OrderRepositoryDatabase from "../src/OrderRepositoryDatabase";
 
 let checkout: Checkout;
+let getOrder: GetOrder;
 
 beforeEach(() => {
     checkout = new Checkout();
+    getOrder = new GetOrder();
 });
 
 test("Não deve aceitar um pedido com cpf inválido", async () => {
@@ -30,7 +35,9 @@ test("Deve criar um pedido vazio", async () => {
 });
 
 test("Deve criar um pedido com 3 produtos", async () => {
+    const uuid = crypto.randomUUID();
     const input = {
+        uuid,
         cpf: "407.302.170-27",
         items: [
             { idProduct: 1, quantity: 1 },
@@ -38,7 +45,8 @@ test("Deve criar um pedido com 3 produtos", async () => {
             { idProduct: 3, quantity: 3 }
         ]
     }
-    const output = await checkout.execute(input);
+    await checkout.execute(input);
+    const output = await getOrder.execute(uuid);
     expect(output.total).toBe(6090);
 });
 
@@ -210,4 +218,22 @@ test("Deve criar um pedido com 1 produto em dólar usando um fake", async () => 
     }
     const output = await checkout.execute(input);
     expect(output.total).toBe(3000);
+});
+
+test("Deve criar um pedido com e verificar o código de série", async () => {
+    const stub = sinon.stub(OrderRepositoryDatabase.prototype, "count").resolves(1);
+    const uuid = crypto.randomUUID();
+    const input = {
+        uuid,
+        cpf: "407.302.170-27",
+        items: [
+            { idProduct: 1, quantity: 1 },
+            { idProduct: 2, quantity: 1 },
+            { idProduct: 3, quantity: 3 }
+        ]
+    }
+    await checkout.execute(input);
+    const output = await getOrder.execute(uuid);
+    expect(output.code).toBe("202300000001");
+    stub.restore();
 });
