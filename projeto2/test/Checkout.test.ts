@@ -1,13 +1,14 @@
-import Checkout from "../src/Checkout";
+import Checkout from "../src/application/usecase/Checkout";
 import CurrencyGatewayHttp from "../src/CurrencyGatewayHttp";
 import ProductRepositoryDatabase from "../src/ProductRepositoryDatabase";
 import CouponRepositoryDatabase from "../src/CouponRepositoryDatabase";
 import CurrencyGateway from "../src/CurrencyGateway";
 import ProductRepository from "../src/ProductRepository";
-import GetOrder from "../src/GetOrder";
+import GetOrder from "../src/application/usecase/GetOrder";
 import crypto from "crypto";
 import sinon from "sinon";
 import OrderRepositoryDatabase from "../src/OrderRepositoryDatabase";
+import Product from "../src/domain/entity/Product";
 
 let checkout: Checkout;
 let getOrder: GetOrder;
@@ -61,7 +62,7 @@ test("Deve criar um pedido com 3 produtos com cupom de desconto", async () => {
         coupon: "VALE20"
     }
     const output = await checkout.execute(input);
-    expect(output.total).toBe(6090);
+    expect(output.total).toBe(4872);
 });
 
 test("Deve criar um pedido com 3 produtos com cupom de desconto expirado", async () => {
@@ -142,7 +143,7 @@ test("Deve criar um pedido com 1 produto em dólar usando um stub", async () => 
         usd: 3
     });
     const stubProductRepository = sinon.stub(ProductRepositoryDatabase.prototype, "getProduct").resolves(
-        { idProduct: 5, description: "A", price: 1000, width: 10, height: 10, length: 10, weight: 10, currency: "USD" }
+        new Product(5, "A", 1000, 10, 10, 10, 10, "USD")
     );
     const input = {
         cpf: "407.302.170-27",
@@ -169,7 +170,7 @@ test("Deve criar um pedido com 3 produtos com cupom de desconto com spy", async 
         coupon: "VALE20"
     }
     const output = await checkout.execute(input);
-    expect(output.total).toBe(6090);
+    expect(output.total).toBe(4872);
     expect(spyCouponRepository.calledOnce).toBeTruthy();
     expect(spyCouponRepository.calledWith("VALE20")).toBeTruthy();
     expect(spyProductRepository.calledThrice).toBeTruthy();
@@ -204,9 +205,7 @@ test("Deve criar um pedido com 1 produto em dólar usando um fake", async () => 
     }
     const productRepository: ProductRepository = {
         async getProduct(idProduct: number): Promise<any> {
-            return { 
-                idProduct: 6, description: "A", price: 1000, width: 10, height: 10, length: 10, weight: 10, currency: "USD" 
-            }
+            return new Product(6, "A", 1000, 10, 10, 10, 10, "USD");
         }
     }
     checkout = new Checkout(currencyGateway, productRepository);

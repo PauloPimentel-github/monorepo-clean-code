@@ -51,7 +51,7 @@ test("Deve criar um pedido com 3 produtos com cupom de desconto", async () => {
     }
     const response = await axios.post("http://localhost:3000/checkout", input);
     const output = response.data;
-    expect(output.total).toBe(6090);
+    expect(output.total).toBe(4872);
 });
 
 test("Deve criar um pedido com 3 produtos com cupom de desconto expirado", async () => {
