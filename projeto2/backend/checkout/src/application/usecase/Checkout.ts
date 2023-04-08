@@ -7,6 +7,8 @@ import ProductRepository from "../../application/repository/ProductRepository";
 import FreightGateway, { Input as FreightInput } from "../gateway/FreightGateway";
 import FreightGatewayHttp from "../../infra/gateway/FreightGatewayHttp";
 import AxiosAdapater from "../../infra/http/AxiosAdapter";
+import CatalogGateway from "../gateway/CatalogGateway";
+import CatalogGatewayHttp from "../../infra/gateway/CatalogGatewayHttp";
 
 export default class Checkout {
 
@@ -15,7 +17,8 @@ export default class Checkout {
         readonly productRepository: ProductRepository,
         readonly couponRepository: CouponRepository,
         readonly orderRepository: OrderRepository,
-        readonly freightGateway: FreightGateway = new FreightGatewayHttp(new AxiosAdapater())
+        readonly freightGateway: FreightGateway = new FreightGatewayHttp(new AxiosAdapater()),
+        readonly catalogGateway: CatalogGateway = new CatalogGatewayHttp(new AxiosAdapater())
     ) {
     }
 
@@ -28,7 +31,8 @@ export default class Checkout {
         const freightInput: FreightInput = { items: [] };
         if (input.items) {
             for (const item of input.items) {
-                const product = await this.productRepository.getProduct(item.idProduct);
+                // const product = await this.productRepository.getProduct(item.idProduct);
+                const product = await this.catalogGateway.getProduct(item.idProduct);
                 order.addItem(product, item.quantity);
                 freightInput.items.push({ width: product.width, height: product.height, length: product.length, weight: product.weight, quantity: item.quantity });
             }    
